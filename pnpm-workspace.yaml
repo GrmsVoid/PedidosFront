@@ -1,0 +1,4 @@
+# Repo de un solo paquete. Habilita/deniega los build scripts que pnpm v11 bloquea por
+# defecto. unrs-resolver (resolver nativo opcional de ESLint) no se construye: tiene fallback JS.
+allowBuilds:
+  unrs-resolver: false
