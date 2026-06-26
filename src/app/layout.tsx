@@ -3,8 +3,9 @@ import "@/styles/globals.css";
 import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
-  title: "Sistema de Pedidos — Cafetería",
-  description: "Pedidos por QR para cafetería",
+  title: "Café Demo — Pide desde tu mesa",
+  description:
+    "Escanea el QR de tu mesa, arma tu pedido a tu gusto y te lo llevamos. Café de especialidad, sin filas.",
 };
 
 export default function RootLayout({
@@ -12,7 +13,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body>
+      <body className="font-sans">
         <Providers>{children}</Providers>
       </body>
     </html>

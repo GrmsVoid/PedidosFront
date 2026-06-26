@@ -29,7 +29,7 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
 
   if (loading || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-100">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50">
         <Spinner className="h-8 w-8" />
       </div>
     );
@@ -44,42 +44,48 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100">
-      <header className="sticky top-0 z-20 border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5">
-          <div className="flex items-center gap-4">
-            <Link href="/staff" className="font-bold text-slate-900">
-              Café Demo
+    <div className="min-h-screen bg-slate-50">
+      <header className="sticky top-0 z-20 border-b border-slate-100 bg-white/85 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+          <div className="flex items-center gap-5">
+            <Link href="/staff" className="flex items-center gap-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-ink text-xs text-white">
+                ☕
+              </span>
+              <span className="font-display text-base font-semibold tracking-tight text-slate-900">
+                Café Demo
+              </span>
             </Link>
             <nav className="flex gap-1">
-              {links.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className={cn(
-                    "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-                    pathname.startsWith(l.href)
-                      ? "bg-slate-900 text-white"
-                      : "text-slate-600 hover:bg-slate-100",
-                  )}
-                >
-                  {l.label}
-                </Link>
-              ))}
+              {links.map((l) => {
+                const active = pathname.startsWith(l.href);
+                return (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className={cn(
+                      "rounded-lg px-3 py-1.5 text-sm font-medium tracking-tight transition-colors",
+                      active ? "bg-ink text-white" : "text-slate-500 hover:bg-slate-100 hover:text-ink",
+                    )}
+                  >
+                    {l.label}
+                  </Link>
+                );
+              })}
             </nav>
           </div>
           <div className="flex items-center gap-3">
             <span className="hidden text-sm text-slate-500 sm:inline">{user.name}</span>
             <button
               onClick={salir}
-              className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm text-slate-500 hover:bg-slate-100"
+              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink"
             >
               <LogOut className="h-4 w-4" /> Salir
             </button>
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-4 py-5">{children}</main>
+      <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
     </div>
   );
 }
