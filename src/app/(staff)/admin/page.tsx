@@ -3,11 +3,13 @@
 import { useState } from "react";
 import {
   BarChart3,
+  CalendarDays,
   Grid3x3,
   LayoutDashboard,
   PiggyBank,
   TrendingDown,
   TrendingUp,
+  Users,
   UtensilsCrossed,
   type LucideIcon,
 } from "lucide-react";
@@ -19,12 +21,16 @@ import { DashboardTab } from "./finanzas/dashboard-tab";
 import { EgresosTab } from "./finanzas/egresos-tab";
 import { IngresosTab } from "./finanzas/ingresos-tab";
 import { PresupuestoTab } from "./finanzas/presupuesto-tab";
+import { PersonalTab } from "./personal/personal-tab";
+import { TurnosTab } from "./personal/turnos-tab";
 
 type SectionId =
   | "dashboard"
   | "egresos"
   | "ingresos"
   | "presupuesto"
+  | "personal"
+  | "turnos"
   | "catalogo"
   | "mesas"
   | "reportes";
@@ -44,6 +50,13 @@ const GROUPS: { label: string; items: { id: SectionId; label: string; icon: Luci
     items: [
       { id: "catalogo", label: "Catálogo", icon: UtensilsCrossed },
       { id: "mesas", label: "Mesas y QR", icon: Grid3x3 },
+    ],
+  },
+  {
+    label: "Personal",
+    items: [
+      { id: "personal", label: "Personal", icon: Users },
+      { id: "turnos", label: "Turnos", icon: CalendarDays },
     ],
   },
   {
@@ -95,6 +108,8 @@ export default function AdminPage() {
         {section === "egresos" && <EgresosTab />}
         {section === "ingresos" && <IngresosTab />}
         {section === "presupuesto" && <PresupuestoTab />}
+        {section === "personal" && <PersonalTab />}
+        {section === "turnos" && <TurnosTab />}
         {section === "catalogo" && <CatalogoTab />}
         {section === "mesas" && <MesasTab />}
         {section === "reportes" && <ReportesTab />}
