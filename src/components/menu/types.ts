@@ -47,6 +47,7 @@ export type Menu = { categorias: MenuCategoria[]; combos: MenuCombo[] };
 export type CartItem = {
   uid: string;
   productoId: string;
+  comboId?: string | null;
   nombre: string;
   cantidad: number;
   opcionesIds: string[];

@@ -13,7 +13,9 @@ type ColaItem = {
   id: string;
   cantidad: number;
   notaLibre: string | null;
-  producto: { nombre: string };
+  producto: { nombre: string } | null;
+  nombreCongelado: string | null;
+  combo: { items: { cantidad: number; producto: { nombre: string } }[] } | null;
   modificadores: { nombreCongelado: string }[];
 };
 type ColaPedido = {
@@ -127,8 +129,13 @@ export default function KdsPage() {
                   {p.items.map((it) => (
                     <li key={it.id} className="text-sm">
                       <span className="font-medium text-slate-800">
-                        {it.cantidad}× {it.producto.nombre}
+                        {it.cantidad}× {it.producto?.nombre ?? it.nombreCongelado ?? "Ítem"}
                       </span>
+                      {it.combo && (
+                        <span className="block text-xs text-slate-500">
+                          {it.combo.items.map((ci) => `${ci.cantidad}× ${ci.producto.nombre}`).join(", ")}
+                        </span>
+                      )}
                       {it.modificadores.length > 0 && (
                         <span className="block text-xs text-slate-500">
                           {it.modificadores.map((m) => m.nombreCongelado).join(", ")}

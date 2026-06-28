@@ -30,7 +30,8 @@ type Cuenta = {
         id: string;
         cantidad: number;
         precioUnitarioCongelado: string;
-        producto: { nombre: string };
+        producto: { nombre: string } | null;
+        nombreCongelado: string | null;
         modificadores: { nombreCongelado: string }[];
       }[];
     }[];
@@ -185,7 +186,7 @@ export default function CajaPage() {
                   .map((it) => (
                     <div key={it.id} className="flex justify-between gap-2 text-sm">
                       <span className="text-slate-700">
-                        {it.cantidad}× {it.producto.nombre}
+                        {it.cantidad}× {it.producto?.nombre ?? it.nombreCongelado ?? "Ítem"}
                         {it.modificadores.length > 0 && (
                           <span className="text-slate-400">
                             {" "}

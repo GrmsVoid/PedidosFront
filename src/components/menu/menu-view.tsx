@@ -1,17 +1,19 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/cn";
 import { formatStr } from "@/lib/price";
-import type { Menu, MenuProducto } from "./types";
+import type { Menu, MenuCombo, MenuProducto } from "./types";
 
 export function MenuView({
   menu,
   onSelect,
+  onAddCombo,
 }: {
   menu: Menu;
   onSelect: (p: MenuProducto) => void;
+  onAddCombo?: (c: MenuCombo) => void;
 }) {
   return (
     <div className="space-y-6 pb-32">
@@ -60,6 +62,35 @@ export function MenuView({
           </div>
         </section>
       ))}
+
+      {onAddCombo && menu.combos.length > 0 && (
+        <section>
+          <h2 className="mb-2 px-1 text-lg font-semibold text-slate-900">Combos</h2>
+          <div className="space-y-2">
+            {menu.combos.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => onAddCombo(c)}
+                className="flex w-full items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50/50 p-3 text-left transition-colors hover:border-amber-300"
+              >
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-slate-900">{c.nombre}</span>
+                    <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs font-medium text-amber-700">
+                      combo
+                    </span>
+                  </div>
+                  <p className="mt-0.5 text-sm text-slate-500">
+                    {c.items.map((i) => `${i.cantidad}× ${i.nombre}`).join(" + ")}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold text-slate-700">{formatStr(c.precio)}</p>
+                </div>
+                <Plus className="h-5 w-5 shrink-0 text-amber-500" />
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

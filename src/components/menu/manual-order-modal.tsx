@@ -5,10 +5,10 @@ import { ShoppingCart, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { api, ClientApiError } from "@/lib/client-api";
-import { formatCents } from "@/lib/price";
+import { centsFromStr, formatCents } from "@/lib/price";
 import { MenuView } from "./menu-view";
 import { ModifierModal } from "./modifier-modal";
-import type { CartItem, Menu, MenuProducto } from "./types";
+import type { CartItem, Menu, MenuCombo, MenuProducto } from "./types";
 
 /** Composer de pedido manual (mozo). Reusa el menú y el modal de modificadores del cliente. */
 export function ManualOrderModal({
@@ -44,12 +44,16 @@ export function ManualOrderModal({
     setError(null);
     try {
       await api.post(`/api/mozo/sesion/${sesionId}/pedido`, {
-        items: cart.map((c) => ({
-          productoId: c.productoId,
-          cantidad: c.cantidad,
-          opcionesIds: c.opcionesIds,
-          notaLibre: c.notaLibre,
-        })),
+        items: cart.map((c) =>
+          c.comboId
+            ? { comboId: c.comboId, cantidad: c.cantidad, notaLibre: c.notaLibre }
+            : {
+                productoId: c.productoId,
+                cantidad: c.cantidad,
+                opcionesIds: c.opcionesIds,
+                notaLibre: c.notaLibre,
+              },
+        ),
       });
       onCreated();
     } catch (e) {
@@ -83,7 +87,11 @@ export function ManualOrderModal({
               <Spinner className="h-8 w-8" />
             </div>
           ) : (
-            <MenuView menu={menu} onSelect={(p) => setModalProducto(p)} />
+            <MenuView
+              menu={menu}
+              onSelect={(p) => setModalProducto(p)}
+              onAddCombo={(c) => setCart((prev) => [...prev, comboToCart(c)])}
+            />
           )}
         </div>
 
@@ -133,4 +141,18 @@ export function ManualOrderModal({
       </div>
     </div>
   );
+}
+
+function comboToCart(c: MenuCombo): CartItem {
+  return {
+    uid: crypto.randomUUID(),
+    productoId: "",
+    comboId: c.id,
+    nombre: c.nombre,
+    cantidad: 1,
+    opcionesIds: [],
+    opcionesLabel: c.items.map((i) => `${i.cantidad}× ${i.nombre}`).join(", "),
+    notaLibre: null,
+    precioUnitarioCents: centsFromStr(c.precio),
+  };
 }

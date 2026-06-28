@@ -3,6 +3,7 @@ export type {
   MenuGrupo,
   MenuProducto,
   MenuCategoria,
+  MenuCombo,
   Menu,
   CartItem,
 } from "@/components/menu/types";
@@ -26,7 +27,8 @@ export type SesionActual = {
       canceladoMotivo: string | null;
       items: Array<{
         id: string;
-        productoId: string;
+        productoId: string | null;
+        nombreCongelado: string | null;
         cantidad: number;
         precioUnitarioCongelado: string;
         notaLibre: string | null;

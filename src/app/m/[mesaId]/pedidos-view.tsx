@@ -47,7 +47,8 @@ export function PedidosView({ sesion, menu }: { sesion: SesionActual; menu: Menu
                 {pedido.items.map((it) => (
                   <li key={it.id} className="flex justify-between gap-2">
                     <span className="text-slate-700">
-                      {it.cantidad}× {nombrePorId.get(it.productoId) ?? "Producto"}
+                      {it.cantidad}×{" "}
+                      {(it.productoId && nombrePorId.get(it.productoId)) ?? it.nombreCongelado ?? "Producto"}
                       {it.modificadores.length > 0 && (
                         <span className="text-slate-400">
                           {" "}

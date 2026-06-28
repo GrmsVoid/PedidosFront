@@ -10,8 +10,8 @@ import { MenuView } from "@/components/menu/menu-view";
 import { ModifierModal } from "@/components/menu/modifier-modal";
 import { PedidosView } from "./pedidos-view";
 import { EncuestaView } from "./encuesta-view";
-import { formatCents } from "@/lib/price";
-import type { CartItem, Menu, MenuProducto, SesionActual } from "./types";
+import { centsFromStr, formatCents } from "@/lib/price";
+import type { CartItem, Menu, MenuCombo, MenuProducto, SesionActual } from "./types";
 
 type AbrirResp = { sesionId: string; sessionToken: string; cierreEstimadoIso: string };
 
@@ -101,12 +101,16 @@ export function ClienteApp({ mesaId, qrToken }: { mesaId: string; qrToken: strin
       await api.post(
         "/api/pedidos",
         {
-          items: cart.map((c) => ({
-            productoId: c.productoId,
-            cantidad: c.cantidad,
-            opcionesIds: c.opcionesIds,
-            notaLibre: c.notaLibre,
-          })),
+          items: cart.map((c) =>
+            c.comboId
+              ? { comboId: c.comboId, cantidad: c.cantidad, notaLibre: c.notaLibre }
+              : {
+                  productoId: c.productoId,
+                  cantidad: c.cantidad,
+                  opcionesIds: c.opcionesIds,
+                  notaLibre: c.notaLibre,
+                },
+          ),
         },
         { token, idempotencyKey: crypto.randomUUID() },
       );
@@ -237,7 +241,14 @@ export function ClienteApp({ mesaId, qrToken }: { mesaId: string; qrToken: strin
 
       <main className="px-4 py-4">
         {tab === "menu" && menu && (
-          <MenuView menu={menu} onSelect={(p) => setModalProducto(p)} />
+          <MenuView
+            menu={menu}
+            onSelect={(p) => setModalProducto(p)}
+            onAddCombo={(c) => {
+              setCart((prev) => [...prev, comboToCart(c)]);
+              flash("ok", `${c.nombre} agregado`);
+            }}
+          />
         )}
         {tab === "pedido" && (
           <div className="space-y-4">
@@ -306,6 +317,20 @@ export function ClienteApp({ mesaId, qrToken }: { mesaId: string; qrToken: strin
 function centsTotal(total: string): number {
   const [a, b = "0"] = total.split(".");
   return parseInt(a || "0", 10) * 100 + parseInt((b + "00").slice(0, 2), 10);
+}
+
+function comboToCart(c: MenuCombo): CartItem {
+  return {
+    uid: crypto.randomUUID(),
+    productoId: "",
+    comboId: c.id,
+    nombre: c.nombre,
+    cantidad: 1,
+    opcionesIds: [],
+    opcionesLabel: c.items.map((i) => `${i.cantidad}× ${i.nombre}`).join(", "),
+    notaLibre: null,
+    precioUnitarioCents: centsFromStr(c.precio),
+  };
 }
 
 function emptySesion(): SesionActual {

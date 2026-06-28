@@ -25,7 +25,8 @@ type MozoSesion = {
     items: {
       id: string;
       cantidad: number;
-      producto: { nombre: string };
+      producto: { nombre: string } | null;
+      nombreCongelado: string | null;
       modificadores: { nombreCongelado: string }[];
     }[];
   }[];
@@ -225,7 +226,7 @@ export default function MozoPage() {
                   <ul className="text-sm text-slate-600">
                     {p.items.map((it) => (
                       <li key={it.id}>
-                        {it.cantidad}× {it.producto.nombre}
+                        {it.cantidad}× {it.producto?.nombre ?? it.nombreCongelado ?? "Ítem"}
                       </li>
                     ))}
                   </ul>
