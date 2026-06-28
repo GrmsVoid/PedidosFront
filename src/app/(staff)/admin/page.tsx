@@ -7,6 +7,7 @@ import {
   Grid3x3,
   LayoutDashboard,
   PiggyBank,
+  Receipt,
   TrendingDown,
   TrendingUp,
   Users,
@@ -23,6 +24,7 @@ import { IngresosTab } from "./finanzas/ingresos-tab";
 import { PresupuestoTab } from "./finanzas/presupuesto-tab";
 import { PersonalTab } from "./personal/personal-tab";
 import { TurnosTab } from "./personal/turnos-tab";
+import { PlanillaTab } from "./personal/planilla-tab";
 
 type SectionId =
   | "dashboard"
@@ -31,6 +33,7 @@ type SectionId =
   | "presupuesto"
   | "personal"
   | "turnos"
+  | "planilla"
   | "catalogo"
   | "mesas"
   | "reportes";
@@ -57,6 +60,7 @@ const GROUPS: { label: string; items: { id: SectionId; label: string; icon: Luci
     items: [
       { id: "personal", label: "Personal", icon: Users },
       { id: "turnos", label: "Turnos", icon: CalendarDays },
+      { id: "planilla", label: "Planilla", icon: Receipt },
     ],
   },
   {
@@ -110,6 +114,7 @@ export default function AdminPage() {
         {section === "presupuesto" && <PresupuestoTab />}
         {section === "personal" && <PersonalTab />}
         {section === "turnos" && <TurnosTab />}
+        {section === "planilla" && <PlanillaTab />}
         {section === "catalogo" && <CatalogoTab />}
         {section === "mesas" && <MesasTab />}
         {section === "reportes" && <ReportesTab />}
