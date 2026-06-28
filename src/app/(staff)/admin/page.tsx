@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   PiggyBank,
   Receipt,
+  Sparkles,
   TrendingDown,
   TrendingUp,
   Users,
@@ -25,6 +26,7 @@ import { PresupuestoTab } from "./finanzas/presupuesto-tab";
 import { PersonalTab } from "./personal/personal-tab";
 import { TurnosTab } from "./personal/turnos-tab";
 import { PlanillaTab } from "./personal/planilla-tab";
+import { MenuDiaTab } from "./menu-dia/menu-dia-tab";
 
 type SectionId =
   | "dashboard"
@@ -35,6 +37,7 @@ type SectionId =
   | "turnos"
   | "planilla"
   | "catalogo"
+  | "menu-dia"
   | "mesas"
   | "reportes";
 
@@ -52,6 +55,7 @@ const GROUPS: { label: string; items: { id: SectionId; label: string; icon: Luci
     label: "Operación",
     items: [
       { id: "catalogo", label: "Catálogo", icon: UtensilsCrossed },
+      { id: "menu-dia", label: "Menú del día", icon: Sparkles },
       { id: "mesas", label: "Mesas y QR", icon: Grid3x3 },
     ],
   },
@@ -116,6 +120,7 @@ export default function AdminPage() {
         {section === "turnos" && <TurnosTab />}
         {section === "planilla" && <PlanillaTab />}
         {section === "catalogo" && <CatalogoTab />}
+        {section === "menu-dia" && <MenuDiaTab />}
         {section === "mesas" && <MesasTab />}
         {section === "reportes" && <ReportesTab />}
       </div>

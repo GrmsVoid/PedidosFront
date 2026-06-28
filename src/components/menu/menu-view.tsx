@@ -38,7 +38,17 @@ export function MenuView({
                     <p className="mt-0.5 line-clamp-2 text-sm text-slate-500">{p.descripcion}</p>
                   )}
                   <p className="mt-1 text-sm font-semibold text-slate-700">
+                    {p.precioAntes && (
+                      <span className="mr-1.5 font-normal text-slate-400 line-through">
+                        {formatStr(p.precioAntes)}
+                      </span>
+                    )}
                     {formatStr(p.precioBase)}
+                    {p.precioAntes && (
+                      <span className="ml-1.5 rounded bg-amber-100 px-1.5 py-0.5 text-xs font-medium text-amber-700">
+                        promo
+                      </span>
+                    )}
                     {p.grupos.length > 0 && (
                       <span className="ml-1 font-normal text-slate-400">· personalizable</span>
                     )}

@@ -20,10 +20,19 @@ export type MenuProducto = {
   descripcion: string | null;
   imagenUrl: string | null;
   precioBase: string;
+  precioAntes: string | null;
   prepTimeMinutes: number;
   disponible: boolean;
   orden: number;
   grupos: MenuGrupo[];
+};
+
+export type MenuCombo = {
+  id: string;
+  nombre: string;
+  descripcion: string | null;
+  precio: string;
+  items: { nombre: string; cantidad: number }[];
 };
 
 export type MenuCategoria = {
@@ -33,7 +42,7 @@ export type MenuCategoria = {
   productos: MenuProducto[];
 };
 
-export type Menu = { categorias: MenuCategoria[] };
+export type Menu = { categorias: MenuCategoria[]; combos: MenuCombo[] };
 
 export type CartItem = {
   uid: string;
