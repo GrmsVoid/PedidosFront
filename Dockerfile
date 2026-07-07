@@ -1,6 +1,8 @@
 # Frontend Next.js (solo UI). Contexto de build: este repo.
-FROM node:20-alpine AS build
-RUN corepack enable
+# Node 22: pnpm 11 requiere Node >= 22.13 (usa el builtin node:sqlite).
+FROM node:22-alpine AS build
+# pnpm fijado a la versión que generó el lockfile (build reproducible).
+RUN corepack enable && corepack prepare pnpm@11.1.3 --activate
 WORKDIR /app
 
 # Deps (capa cacheable)
