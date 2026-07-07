@@ -4,6 +4,7 @@ import { FeaturedMenu } from "@/components/landing/featured-menu";
 const NAV = [
   { href: "#menu", label: "Menú" },
   { href: "#como", label: "Cómo pedir" },
+  { href: "#anticipa", label: "Pide antes" },
   { href: "#visita", label: "Visítanos" },
 ];
 
@@ -76,12 +77,12 @@ export default function Home() {
           >
             Ver la carta
           </a>
-          <a
-            href="#como"
+          <Link
+            href="/pedir"
             className="inline-flex h-12 items-center justify-center rounded-lg border border-slate-200 bg-white px-6 text-[15px] font-medium tracking-tight text-ink transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98]"
           >
-            Cómo funciona
-          </a>
+            Pide antes de llegar →
+          </Link>
         </div>
 
         <div className="mt-16 grid max-w-lg grid-cols-3 gap-8 border-t border-slate-100 pt-8">
@@ -104,6 +105,47 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Pide antes de llegar */}
+      <section id="anticipa" className="border-t border-slate-100">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:grid-cols-2">
+          <div>
+            <SectionTitle eyebrow="¿Vienes en camino?" title="Pide antes de llegar" />
+            <p className="mt-5 max-w-md leading-relaxed text-slate-600">
+              Mira el salón <b>tal como está ahora</b>, elige la mesa que más te guste y deja tu
+              pedido listo. Cuando el mozo lo confirme, entra a cocina — llegas y tu café te
+              espera.
+            </p>
+            <Link
+              href="/pedir"
+              className="mt-8 inline-flex h-12 items-center justify-center rounded-lg bg-ink px-6 text-[15px] font-medium tracking-tight text-white transition-all hover:bg-ink/90 active:scale-[0.98]"
+            >
+              Elegir mi mesa →
+            </Link>
+            <p className="mt-4 text-xs text-slate-400">
+              Recibirás un código para confirmar tu pedido con el mozo, por teléfono o al llegar.
+            </p>
+          </div>
+          <ol className="space-y-4">
+            {[
+              ["01", "Elige tu mesa", "Ve la distribución real del local y toca una mesa libre."],
+              ["02", "Arma tu pedido", "La misma carta del local, con personalizaciones y combos."],
+              ["03", "El mozo confirma", "Te damos un código; al confirmarlo, tu pedido entra a cocina."],
+            ].map(([n, t, d]) => (
+              <li
+                key={n}
+                className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_1px_2px_rgba(11,11,13,0.03)]"
+              >
+                <span className="font-display text-sm font-semibold text-accent">{n}</span>
+                <div>
+                  <h3 className="font-display font-semibold tracking-tight">{t}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-600">{d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 

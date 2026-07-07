@@ -55,6 +55,19 @@ async function request<T>(
       code: "UNKNOWN",
       message: res.statusText || "Error",
     };
+    // Token de staff rechazado (expiró o secreto rotado): limpiar y volver al login,
+    // en vez de dejar las pantallas haciendo polling con errores. Solo aplica cuando
+    // la request usó el JWT de staff (no los tokens de sesión de mesa del cliente).
+    if (
+      res.status === 401 &&
+      !opts.token &&
+      getStaffToken() &&
+      typeof window !== "undefined" &&
+      !path.startsWith("/api/auth/")
+    ) {
+      clearStaffToken();
+      window.location.assign(`/login?callbackUrl=${encodeURIComponent(window.location.pathname)}`);
+    }
     throw new ClientApiError(err.code, err.message, res.status, err.details);
   }
   return json as T;

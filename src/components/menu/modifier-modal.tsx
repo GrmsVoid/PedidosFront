@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Minus, Plus, X } from "lucide-react";
+import { Check, Minus, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/cn";
@@ -72,17 +72,37 @@ export function ModifierModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center">
-      <div className="flex max-h-[90vh] w-full max-w-md flex-col rounded-t-2xl bg-white sm:rounded-2xl">
-        <div className="flex items-start justify-between border-b border-slate-100 p-4">
-          <div>
-            <h2 className="text-lg font-semibold text-slate-900">{producto.nombre}</h2>
+    <div
+      className="fixed inset-0 z-50 flex animate-fade-in items-end justify-center bg-ink/45 backdrop-blur-[2px] sm:items-center sm:p-4"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={producto.nombre}
+        onClick={(e) => e.stopPropagation()}
+        className="flex max-h-[90vh] w-full max-w-md animate-slide-up flex-col rounded-t-3xl bg-white shadow-lift sm:animate-scale-in sm:rounded-3xl"
+      >
+        {/* Asa (móvil) */}
+        <div className="flex justify-center pt-2.5 sm:hidden">
+          <span className="h-1 w-10 rounded-full bg-slate-200" />
+        </div>
+
+        <div className="flex items-start justify-between gap-3 border-b border-slate-100 p-4 pt-3 sm:pt-4">
+          <div className="min-w-0">
+            <h2 className="font-display text-lg font-semibold tracking-tight text-slate-900">
+              {producto.nombre}
+            </h2>
             {producto.descripcion && (
               <p className="mt-0.5 text-sm text-slate-500">{producto.descripcion}</p>
             )}
           </div>
-          <button onClick={onClose} aria-label="Cerrar" className="rounded-full p-1 hover:bg-slate-100">
-            <X className="h-5 w-5 text-slate-500" />
+          <button
+            onClick={onClose}
+            aria-label="Cerrar"
+            className="rounded-full bg-slate-100 p-1.5 text-slate-500 transition-all duration-150 hover:bg-slate-200 hover:text-ink active:scale-90"
+          >
+            <X className="h-4 w-4" />
           </button>
         </div>
 
@@ -112,28 +132,44 @@ export function ModifierModal({
                         disabled={!o.disponible}
                         onClick={() => toggle(g.id, o.id, g.maxSeleccion)}
                         className={cn(
-                          "flex w-full items-center justify-between rounded-lg border px-3 py-2 text-left text-sm transition-colors",
+                          "flex w-full items-center justify-between rounded-xl border px-3 py-2.5 text-left text-sm transition-all duration-150 active:scale-[0.99]",
                           checked
-                            ? "border-slate-900 bg-slate-900/5"
-                            : "border-slate-200 hover:bg-slate-50",
+                            ? "border-ink bg-ink/[0.04] shadow-sm"
+                            : "border-slate-200 hover:border-slate-300 hover:bg-slate-50",
                           !o.disponible && "cursor-not-allowed opacity-40",
                         )}
                       >
-                        <span className="flex items-center gap-2">
+                        <span className="flex items-center gap-2.5">
                           <span
                             className={cn(
-                              "flex h-4 w-4 items-center justify-center border",
-                              g.maxSeleccion === 1 ? "rounded-full" : "rounded",
-                              checked ? "border-slate-900 bg-slate-900" : "border-slate-300",
+                              "flex h-[18px] w-[18px] items-center justify-center border transition-all duration-150",
+                              g.maxSeleccion === 1 ? "rounded-full" : "rounded-md",
+                              checked
+                                ? "scale-105 border-ink bg-ink text-white"
+                                : "border-slate-300 bg-white",
                             )}
                           >
-                            {checked && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+                            {checked &&
+                              (g.maxSeleccion === 1 ? (
+                                <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                              ) : (
+                                <Check className="h-3 w-3" strokeWidth={3} />
+                              ))}
                           </span>
-                          {o.nombre}
+                          <span className={cn(checked && "font-medium text-slate-900")}>
+                            {o.nombre}
+                          </span>
                           {!o.disponible && <span className="text-xs text-slate-400">(agotado)</span>}
                         </span>
                         {deltaCents > 0 && (
-                          <span className="text-slate-500">+{formatCents(deltaCents)}</span>
+                          <span
+                            className={cn(
+                              "tabular-nums",
+                              checked ? "font-medium text-slate-700" : "text-slate-500",
+                            )}
+                          >
+                            +{formatCents(deltaCents)}
+                          </span>
                         )}
                       </button>
                     );
@@ -151,25 +187,28 @@ export function ModifierModal({
               maxLength={200}
               rows={2}
               placeholder="Ej: sin azúcar, bien caliente…"
-              className="w-full resize-none rounded-lg border border-slate-200 p-2 text-sm focus:border-slate-400 focus:outline-none"
+              className="w-full resize-none rounded-xl border border-slate-200 bg-white p-3 text-sm transition-colors placeholder:text-slate-400 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10"
             />
           </div>
         </div>
 
-        <div className="flex items-center gap-3 border-t border-slate-100 p-4">
-          <div className="flex items-center gap-3 rounded-lg border border-slate-200 px-2 py-1">
+        <div className="flex items-center gap-3 border-t border-slate-100 p-4 pb-safe">
+          <div className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
             <button
               onClick={() => setCantidad((c) => Math.max(1, c - 1))}
+              disabled={cantidad <= 1}
               aria-label="Restar"
-              className="rounded p-1 hover:bg-slate-100"
+              className="rounded-lg p-2 text-slate-600 transition-all duration-150 hover:bg-slate-100 active:scale-90 disabled:opacity-30"
             >
               <Minus className="h-4 w-4" />
             </button>
-            <span className="w-6 text-center font-medium">{cantidad}</span>
+            <span key={cantidad} className="w-7 animate-pop text-center font-semibold tabular-nums">
+              {cantidad}
+            </span>
             <button
               onClick={() => setCantidad((c) => Math.min(50, c + 1))}
               aria-label="Sumar"
-              className="rounded p-1 hover:bg-slate-100"
+              className="rounded-lg p-2 text-slate-600 transition-all duration-150 hover:bg-slate-100 active:scale-90"
             >
               <Plus className="h-4 w-4" />
             </button>

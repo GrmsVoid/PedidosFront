@@ -26,7 +26,7 @@ pantallas.
 | --- | --- | --- |
 | `/` | público | **Landing** (home de cafetería): hero, "cómo pedir", **menú en vivo** (`/api/menu`), visítanos, footer. |
 | `/login` | staff | Ingreso (email + PIN/contraseña). |
-| `/m/[mesaId]` | cliente | **PWA**: menú + carrito con modificadores, "mis pedidos" con estado por polling, llamar mozo / pedir cuenta, encuesta al cierre. |
+| `/m/[mesaId]` | cliente | **PWA**: al escanear, la mesa se **reserva 5 min** (contador) y se entra al **pedido grupal** — varios comensales comparten un carrito y **todos aceptan** antes de enviar a cocina (el anfitrión puede quitar inactivos o forzar). Menú con modificadores/combos, "mis pedidos" por polling, llamar mozo / pedir cuenta, encuesta. |
 | `/staff` | staff | Hub con accesos según rol. |
 | `/mozo` | mozo/admin | Mesas (unir/separar), eventos, sesiones, pedido manual, entregar/cancelar. |
 | `/kds` | barista/admin | Cola de cocina (tomar → listo) + marcar productos agotados. |
@@ -36,9 +36,12 @@ pantallas.
 ### Panel `/admin` (sidebar)
 
 - **Negocio** — `Dashboard` (ingresos/egresos/**ganancia**/margen + cancelados),
-  `Egresos`, `Ingresos` extra, `Presupuesto` mensual con alertas.
-- **Operación** — `Catálogo` (CRUD productos/categorías + modificadores), `Mesas y QR`.
-- **Personal** — `Personal` (CRUD staff, roles, remuneración), `Turnos` (agenda semanal).
+  `Ventas` (detalle **venta por venta**, expandible), `Egresos`, `Ingresos` extra,
+  `Presupuesto` mensual con alertas.
+- **Operación** — `Catálogo` (CRUD productos/categorías + modificadores),
+  `Menú del día` (promos + combos), `Mesas y QR`.
+- **Personal** — `Personal` (CRUD staff, roles, remuneración), `Turnos` (agenda semanal),
+  `Planilla` (cálculo → egreso automático).
 - **Análisis** — `Reportes` (ventas, satisfacción, top productos, horas pico).
 
 ## Estructura
@@ -48,22 +51,26 @@ src/
 ├── app/
 │   ├── page.tsx                 landing
 │   ├── login/                   ingreso staff
-│   ├── m/[mesaId]/              PWA del cliente
+│   ├── m/[mesaId]/              PWA del cliente (cliente-app, grupo-view, pedidos, encuesta)
 │   └── (staff)/                 layout con nav por rol
 │       ├── staff|mozo|kds|caja/
 │       └── admin/               panel sidebar
-│           ├── finanzas/        dashboard, egresos, ingresos, presupuesto
-│           └── personal/        personal, turnos
+│           ├── finanzas/        dashboard, ventas, egresos, ingresos, presupuesto
+│           ├── menu-dia/        promos + combos del día
+│           └── personal/        personal, turnos, planilla
 ├── components/{ui,menu,landing,…}
-└── lib/{client-api, roles, money, use-poll, cn, …}
+└── lib/{client-api, roles, money, price, use-poll, cn, …}
 ```
 
 ## Estado de funcionalidades
 
 - ✅ Landing + PWA cliente + staff (mozo/KDS/caja) + admin (catálogo/mesas/reportes).
-- ✅ Panel del dueño — Fase A (finanzas), B (presupuestos), C (personal + turnos).
-- ⏳ Pendiente: Fase D (planilla), E (menú del día/combos); rediseño minimal de la PWA del
-  cliente y de las pantallas de staff (la landing/login/admin ya están en el estilo nuevo).
+- ✅ **Pedido grupal con hold** en la PWA: reserva con contador, "¿eres del mismo grupo?",
+  carrito compartido y aceptación de todos (controles del anfitrión).
+- ✅ Panel del dueño completo — Fase A (finanzas), B (presupuestos), C (personal + turnos),
+  D (planilla), E (menú del día/combos), más **Ventas** (detalle venta por venta).
+- ⏳ Pendiente (opcional): rediseño minimal de mozo/KDS/caja y de la PWA del cliente
+  (la landing/login/admin ya están en el estilo nuevo); `socket.io-client` para realtime.
 
 ## Desarrollo local
 

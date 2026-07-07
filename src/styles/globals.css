@@ -17,9 +17,69 @@
   }
   body {
     @apply bg-white text-slate-900 antialiased;
+    -webkit-tap-highlight-color: transparent;
   }
   ::selection {
     background-color: #0b0b0d;
     color: #fff;
+  }
+
+  /* Scrollbar discreto (desktop) */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(11, 11, 13, 0.18) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: rgba(11, 11, 13, 0.15);
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Accesibilidad: sin animaciones para quien las desactiva */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Oculta la barra de scroll conservando el scroll (chips de categorías, etc.) */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Respeta el notch / home-bar en móviles */
+  .pb-safe {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  /* Placeholder con brillo (skeleton) */
+  .skeleton-shimmer {
+    background: linear-gradient(
+      100deg,
+      rgba(11, 11, 13, 0.05) 40%,
+      rgba(11, 11, 13, 0.1) 50%,
+      rgba(11, 11, 13, 0.05) 60%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.6s linear infinite;
   }
 }

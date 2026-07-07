@@ -9,7 +9,7 @@ export type StaffUser = { id: string; name: string; email: string; roles: RolCod
 type AuthState = {
   user: StaffUser | null;
   loading: boolean;
-  login: (email: string, secret: string) => Promise<void>;
+  login: (email: string, secret: string) => Promise<StaffUser>;
   logout: () => void;
 };
 
@@ -49,6 +49,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     });
     setStaffToken(res.token);
     setUser(res.user);
+    return res.user;
   }, []);
 
   const logout = useCallback(() => {

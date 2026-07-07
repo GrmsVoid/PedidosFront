@@ -15,10 +15,46 @@ export type PedidoEstado =
   | "ENTREGADO"
   | "CANCELADO";
 
+export type GrupoParticipante = {
+  id: string;
+  nombre: string;
+  esAnfitrion: boolean;
+  activo: boolean;
+  acepto: boolean;
+  soyYo: boolean;
+};
+
+export type GrupoCarritoItem = {
+  id: string;
+  participanteId: string;
+  participanteNombre: string;
+  esMio: boolean;
+  nombre: string;
+  esCombo: boolean;
+  cantidad: number;
+  precioUnitario: string;
+  subtotal: string;
+  opcionesLabel: string;
+  notaLibre: string | null;
+};
+
+export type GrupoEstado = {
+  sesionId: string;
+  miId: string;
+  soyAnfitrion: boolean;
+  holdExpiraEn: string | null;
+  tienePedidos: boolean;
+  participantes: GrupoParticipante[];
+  carrito: GrupoCarritoItem[];
+  total: string;
+  pendientes: string[];
+  todosAceptaron: boolean;
+};
+
 export type SesionActual = {
   sesion: {
     id: string;
-    estado: "ABIERTA" | "CERRADA" | "FUGADA";
+    estado: "ABIERTA" | "CERRADA" | "FUGADA" | "EXPIRADA";
     pedidos: Array<{
       id: string;
       numeroSesion: number;

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ShoppingCart, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api, ClientApiError } from "@/lib/client-api";
 import { centsFromStr, formatCents } from "@/lib/price";
 import { MenuView } from "./menu-view";
@@ -64,54 +64,69 @@ export function ManualOrderModal({
   }
 
   return (
-    <div className="fixed inset-0 z-40 flex items-end justify-center bg-black/40 sm:items-center">
-      <div className="flex h-[92vh] w-full max-w-md flex-col rounded-t-2xl bg-slate-50 sm:h-[85vh] sm:rounded-2xl">
-        <div className="flex items-center justify-between rounded-t-2xl border-b border-slate-200 bg-white p-4">
+    <div
+      className="fixed inset-0 z-40 flex animate-fade-in items-end justify-center bg-ink/45 backdrop-blur-[2px] sm:items-center sm:p-4"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Pedido manual · Mesa ${mesaLabel}`}
+        onClick={(e) => e.stopPropagation()}
+        className="flex h-[92vh] w-full max-w-md animate-slide-up flex-col rounded-t-3xl bg-slate-50 shadow-lift sm:h-[85vh] sm:animate-scale-in sm:rounded-3xl"
+      >
+        <div className="flex items-center justify-between rounded-t-3xl border-b border-slate-200 bg-white p-4">
           <div>
-            <h2 className="font-semibold text-slate-900">Pedido manual</h2>
+            <h2 className="font-display font-semibold tracking-tight text-slate-900">
+              Pedido manual
+            </h2>
             <p className="text-xs text-slate-500">Mesa {mesaLabel}</p>
           </div>
           <button
             onClick={onClose}
             aria-label="Cerrar"
-            className="rounded-full p-1 hover:bg-slate-100"
+            className="rounded-full bg-slate-100 p-1.5 text-slate-500 transition-all duration-150 hover:bg-slate-200 hover:text-ink active:scale-90"
           >
-            <X className="h-5 w-5 text-slate-500" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4">
           {error && <p className="mb-2 text-sm text-red-500">{error}</p>}
           {!menu ? (
-            <div className="flex justify-center py-16">
-              <Spinner className="h-8 w-8" />
+            <div className="space-y-3">
+              <Skeleton className="h-9 w-full rounded-full" />
+              {[...Array(4)].map((_, i) => (
+                <Skeleton key={i} className="h-20 w-full rounded-2xl" />
+              ))}
             </div>
           ) : (
             <MenuView
               menu={menu}
               onSelect={(p) => setModalProducto(p)}
               onAddCombo={(c) => setCart((prev) => [...prev, comboToCart(c)])}
+              scrollMtClass="scroll-mt-14"
             />
           )}
         </div>
 
         {cart.length > 0 && (
-          <div className="border-t border-slate-200 bg-white p-3">
+          <div className="animate-slide-up border-t border-slate-200 bg-white p-3 pb-safe shadow-top-soft">
             <div className="mb-2 max-h-28 space-y-1 overflow-y-auto">
               {cart.map((it) => (
                 <div key={it.uid} className="flex items-center justify-between gap-2 text-sm">
                   <span className="min-w-0 truncate text-slate-700">
-                    {it.cantidad}× {it.nombre}
+                    <span className="tabular-nums">{it.cantidad}×</span> {it.nombre}
                     {it.opcionesLabel && <span className="text-slate-400"> · {it.opcionesLabel}</span>}
                   </span>
-                  <div className="flex shrink-0 items-center gap-2">
-                    <span className="text-slate-500">
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    <span className="tabular-nums text-slate-500">
                       {formatCents(it.precioUnitarioCents * it.cantidad)}
                     </span>
                     <button
                       onClick={() => setCart((c) => c.filter((x) => x.uid !== it.uid))}
                       aria-label="Quitar"
-                      className="rounded p-1 text-slate-400 hover:bg-slate-100"
+                      className="rounded-lg p-1 text-slate-400 transition-all duration-150 hover:bg-red-50 hover:text-red-500 active:scale-90"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -119,11 +134,9 @@ export function ManualOrderModal({
                 </div>
               ))}
             </div>
-            <Button size="lg" className="w-full" disabled={enviando} onClick={confirmar}>
+            <Button size="lg" className="w-full" loading={enviando} onClick={confirmar}>
               <ShoppingCart className="h-5 w-5" />
-              {enviando
-                ? "Enviando…"
-                : `Enviar a barra · ${count} ${count === 1 ? "ítem" : "ítems"} · ${formatCents(totalCents)}`}
+              {`Enviar a barra · ${count} ${count === 1 ? "ítem" : "ítems"} · ${formatCents(totalCents)}`}
             </Button>
           </div>
         )}

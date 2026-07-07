@@ -6,8 +6,10 @@ import {
   CalendarDays,
   Grid3x3,
   LayoutDashboard,
+  Map,
   PiggyBank,
   Receipt,
+  ScrollText,
   Sparkles,
   TrendingDown,
   TrendingUp,
@@ -18,8 +20,10 @@ import {
 import { cn } from "@/lib/cn";
 import { CatalogoTab } from "./catalogo-tab";
 import { MesasTab } from "./mesas-tab";
+import { SalonTab } from "./salon-tab";
 import { ReportesTab } from "./reportes-tab";
 import { DashboardTab } from "./finanzas/dashboard-tab";
+import { VentasTab } from "./finanzas/ventas-tab";
 import { EgresosTab } from "./finanzas/egresos-tab";
 import { IngresosTab } from "./finanzas/ingresos-tab";
 import { PresupuestoTab } from "./finanzas/presupuesto-tab";
@@ -30,6 +34,7 @@ import { MenuDiaTab } from "./menu-dia/menu-dia-tab";
 
 type SectionId =
   | "dashboard"
+  | "ventas"
   | "egresos"
   | "ingresos"
   | "presupuesto"
@@ -39,6 +44,7 @@ type SectionId =
   | "catalogo"
   | "menu-dia"
   | "mesas"
+  | "salon"
   | "reportes";
 
 const GROUPS: { label: string; items: { id: SectionId; label: string; icon: LucideIcon }[] }[] = [
@@ -46,6 +52,7 @@ const GROUPS: { label: string; items: { id: SectionId; label: string; icon: Luci
     label: "Negocio",
     items: [
       { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { id: "ventas", label: "Ventas", icon: ScrollText },
       { id: "egresos", label: "Egresos", icon: TrendingDown },
       { id: "ingresos", label: "Ingresos", icon: TrendingUp },
       { id: "presupuesto", label: "Presupuesto", icon: PiggyBank },
@@ -57,6 +64,7 @@ const GROUPS: { label: string; items: { id: SectionId; label: string; icon: Luci
       { id: "catalogo", label: "Catálogo", icon: UtensilsCrossed },
       { id: "menu-dia", label: "Menú del día", icon: Sparkles },
       { id: "mesas", label: "Mesas y QR", icon: Grid3x3 },
+      { id: "salon", label: "Salón (plano)", icon: Map },
     ],
   },
   {
@@ -113,6 +121,7 @@ export default function AdminPage() {
 
       <div className="min-w-0 flex-1">
         {section === "dashboard" && <DashboardTab />}
+        {section === "ventas" && <VentasTab />}
         {section === "egresos" && <EgresosTab />}
         {section === "ingresos" && <IngresosTab />}
         {section === "presupuesto" && <PresupuestoTab />}
@@ -122,6 +131,7 @@ export default function AdminPage() {
         {section === "catalogo" && <CatalogoTab />}
         {section === "menu-dia" && <MenuDiaTab />}
         {section === "mesas" && <MesasTab />}
+        {section === "salon" && <SalonTab />}
         {section === "reportes" && <ReportesTab />}
       </div>
     </div>
