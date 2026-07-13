@@ -30,6 +30,7 @@ type Mesa = {
 type PedidoEstado = "CONFIRMADO" | "EN_PREPARACION" | "LISTO" | "ENTREGADO" | "CANCELADO";
 type MozoSesion = {
   id: string;
+  abiertaEn: string;
   mesas: { mesa: { id: string; codigo: string } }[];
   pedidos: {
     id: string;
@@ -517,7 +518,7 @@ export default function MozoPage() {
         )}
       </section>
 
-      {/* Sesiones abiertas → pedido manual */}
+      {/* Sesiones abiertas → pedido manual / rescate de mesas olvidadas */}
       {(sesiones.data ?? []).length > 0 && (
         <section>
           <h2 className="mb-2 text-lg font-semibold tracking-tight text-slate-900">
@@ -526,17 +527,53 @@ export default function MozoPage() {
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {(sesiones.data ?? []).map((s) => {
               const label = s.mesas.map((m) => m.mesa.codigo).join(" + ");
+              const min = Math.floor((Date.now() - new Date(s.abiertaEn).getTime()) / 60_000);
+              const olvidada = min >= 120; // 2+ horas abierta: probablemente nadie la cerró
+              const sinActividad = s.pedidos.every(
+                (p) => p.estado === "CANCELADO",
+              );
               return (
                 <Card key={s.id} interactive>
-                  <CardContent className="flex items-center justify-between gap-3 py-3">
-                    <span className="text-sm font-medium text-slate-800">Mesa {label}</span>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setManual({ sesionId: s.id, label })}
-                    >
-                      <Plus className="h-4 w-4" /> Pedido manual
-                    </Button>
+                  <CardContent className="space-y-2 py-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <span className="text-sm font-medium text-slate-800">Mesa {label}</span>
+                        <p
+                          className={cn(
+                            "text-xs tabular-nums",
+                            olvidada ? "font-medium text-red-500" : "text-slate-400",
+                          )}
+                        >
+                          abierta {fmtAntiguedad(min)}
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setManual({ sesionId: s.id, label })}
+                      >
+                        <Plus className="h-4 w-4" /> Pedido manual
+                      </Button>
+                    </div>
+                    {/* Sin consumo real: se puede liberar sin pasar por caja. */}
+                    {sinActividad && (
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="w-full text-red-600 hover:bg-red-50"
+                        disabled={busy === `liberar-${s.id}`}
+                        onClick={() => {
+                          if (!window.confirm(`¿Liberar la mesa ${label}? La sesión se cerrará sin cobro.`)) return;
+                          run(`liberar-${s.id}`, () =>
+                            api.post(`/api/caja/sesion/${s.id}/cerrar-sin-pago`, {
+                              motivo: "Mesa liberada por el mozo (sesión sin consumo)",
+                            }),
+                          );
+                        }}
+                      >
+                        <Unlink className="h-4 w-4" /> Liberar mesa
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               );
@@ -731,4 +768,13 @@ export default function MozoPage() {
       )}
     </div>
   );
+}
+
+function fmtAntiguedad(min: number): string {
+  if (min < 1) return "hace un momento";
+  if (min < 60) return `hace ${min} min`;
+  const h = Math.floor(min / 60);
+  if (h < 24) return `hace ${h} h ${min % 60} min`;
+  const d = Math.floor(h / 24);
+  return `hace ${d} día${d > 1 ? "s" : ""}`;
 }

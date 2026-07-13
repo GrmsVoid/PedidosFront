@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
-import { QrCode, RefreshCw, Trash2 } from "lucide-react";
+import { ExternalLink, QrCode, RefreshCw, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -125,7 +125,15 @@ export function MesasTab() {
               <p className="break-all text-[10px] text-slate-400">
                 {origin}/m/{m.id}
               </p>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
+                {/* En demo/local no se puede escanear la propia pantalla: abre la
+                    vista del cliente directamente en otra pestaña. */}
+                <Button
+                  size="sm"
+                  onClick={() => window.open(`/m/${m.id}?t=${m.qrToken}`, "_blank", "noopener")}
+                >
+                  <ExternalLink className="h-3.5 w-3.5" /> Abrir como cliente
+                </Button>
                 <Button
                   size="sm"
                   variant="outline"

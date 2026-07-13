@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Oculta que el stack es Next.js.
+  poweredByHeader: false,
+  // No publicar sourcemaps del navegador: sin ellos, el bundle minificado no se
+  // puede "des-minificar" a código legible. (Es el default, explícito a propósito.)
+  productionBrowserSourceMaps: false,
   // La app no se debe poder embeber en iframes de terceros (clickjacking sobre
   // caja/admin) ni permitir sniffing de tipos. Permissions-Policy corta APIs
   // sensibles que el sistema no usa.

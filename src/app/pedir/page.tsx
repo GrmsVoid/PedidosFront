@@ -124,16 +124,16 @@ export default function PedirPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-100 to-slate-200/70">
-      <div className="mx-auto min-h-screen w-full max-w-md bg-paper shadow-2xl ring-1 ring-slate-900/5">
+    <div className="min-h-screen bg-[#e9e8e1]">
+      <div className="mx-auto min-h-screen w-full max-w-md border-x border-line bg-paper shadow-lift">
         {/* Header */}
-        <header className="sticky top-0 z-10 border-b border-slate-200/80 bg-white/85 backdrop-blur-md">
+        <header className="sticky top-0 z-10 border-b border-line bg-paper/90 backdrop-blur-xl">
           <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-2.5">
               <Link
                 href="/"
                 aria-label="Volver al inicio"
-                className="rounded-full bg-slate-100 p-2 text-slate-500 transition-all duration-150 hover:bg-slate-200 hover:text-ink active:scale-90"
+                className="rounded-sm border border-line bg-panel p-2 text-muted transition-all duration-150 hover:border-brand hover:bg-accent-soft hover:text-ink active:scale-90"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Link>
@@ -157,8 +157,8 @@ export default function PedirPage() {
                     key={p}
                     className={cn(
                       "h-1.5 rounded-full transition-all duration-300",
-                      paso === p ? "w-6 bg-ink" : "w-1.5 bg-slate-300",
-                      i < ["mesa", "datos", "carta"].indexOf(paso) && "bg-ink/40",
+                      paso === p ? "w-6 bg-brand" : "w-1.5 bg-slate-300",
+                      i < ["mesa", "datos", "carta"].indexOf(paso) && "bg-brand/40",
                     )}
                   />
                 ))}
@@ -177,7 +177,7 @@ export default function PedirPage() {
             {!salon ? (
               <Skeleton className="mt-4 aspect-[3/2] w-full rounded-2xl" />
             ) : salon.plano && salon.plano.pisos.length > 0 ? (
-              <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_2px_rgba(11,11,13,0.03)]">
+              <div className="mt-4 rounded-sm border border-line bg-panel p-3 shadow-soft">
                 {salon.plano.pisos.length > 1 && (
                   <div className="no-scrollbar mb-3 flex gap-2 overflow-x-auto">
                     {salon.plano.pisos.map((p) => (
@@ -238,7 +238,7 @@ export default function PedirPage() {
             )}
             {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
             {mesa && (
-              <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md animate-slide-up border-t border-slate-200/80 bg-white/95 p-3 pb-safe shadow-top-soft backdrop-blur">
+                <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md animate-slide-up border-t border-line bg-paper/95 p-3 pb-safe shadow-top-soft backdrop-blur">
                 <Button size="lg" className="w-full justify-between" onClick={() => setPaso("datos")}>
                   <span>
                     Mesa {mesa.codigo} · {mesa.capacidad} personas
@@ -276,7 +276,7 @@ export default function PedirPage() {
                 maxLength={40}
                 placeholder="Tu nombre"
                 autoComplete="name"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-center font-carta text-lg shadow-sm transition-colors placeholder:text-slate-300 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10"
+                className="w-full rounded-sm border border-line bg-panel px-4 py-3 text-center font-carta text-lg shadow-sm transition-colors placeholder:text-slate-300 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10"
               />
               <input
                 value={telefono}
@@ -285,7 +285,7 @@ export default function PedirPage() {
                 inputMode="tel"
                 placeholder="Teléfono / WhatsApp (opcional)"
                 autoComplete="tel"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-sm shadow-sm transition-colors placeholder:text-slate-400 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10"
+                className="w-full rounded-sm border border-line bg-panel px-4 py-3 text-center text-sm shadow-sm transition-colors placeholder:text-slate-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10"
               />
               <Button type="submit" size="lg" className="w-full" disabled={nombre.trim().length < 2}>
                 Ver la carta
@@ -315,7 +315,7 @@ export default function PedirPage() {
             )}
 
             {cart.length > 0 && (
-              <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md animate-slide-up border-t border-slate-200/80 bg-white/95 p-3 pb-safe shadow-top-soft backdrop-blur">
+              <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md animate-slide-up border-t border-line bg-paper/95 p-3 pb-safe shadow-top-soft backdrop-blur">
                 <div className="mb-2 max-h-28 space-y-1 overflow-y-auto">
                   {cart.map((it) => (
                     <div key={it.uid} className="flex items-center justify-between gap-2 text-sm">

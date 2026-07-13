@@ -81,7 +81,7 @@ export function CatalogoTab() {
   const nombreCat = new Map(cats.map((c) => [c.id, c.nombre]));
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+    <div className="grid min-w-0 gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
       {/* Categorías */}
       <div>
         <h2 className="mb-2 font-semibold text-slate-900">Categorías</h2>
@@ -91,7 +91,7 @@ export function CatalogoTab() {
               key={c.id}
               className="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm"
             >
-              <span>{c.nombre}</span>
+              <span className="min-w-0 truncate pr-2">{c.nombre}</span>
               <button
                 disabled={busy === c.id}
                 onClick={() => run(c.id, () => api.del(`/api/admin/categorias/${c.id}`))}
@@ -111,7 +111,7 @@ export function CatalogoTab() {
       </div>
 
       {/* Productos */}
-      <div>
+      <div className="min-w-0">
         <div className="mb-2 flex items-center justify-between">
           <h2 className="font-semibold text-slate-900">Productos</h2>
         </div>
@@ -119,10 +119,10 @@ export function CatalogoTab() {
         <div className="mb-4 space-y-2">
           {prods.map((p) => (
             <Card key={p.id}>
-              <CardContent className="flex items-center justify-between gap-3 py-3">
+              <CardContent className="flex min-w-0 flex-col items-stretch gap-3 py-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-slate-900">{p.nombre}</span>
+                  <div className="flex min-w-0 flex-wrap items-center gap-2">
+                    <span className="min-w-0 break-words font-medium text-slate-900">{p.nombre}</span>
                     <Badge tone="slate">{nombreCat.get(p.categoriaId) ?? "—"}</Badge>
                     {!p.disponible && <Badge tone="red">agotado</Badge>}
                   </div>
@@ -130,9 +130,10 @@ export function CatalogoTab() {
                     {fmt(p.precioBase)} · {p.grupos.length} grupos mod.
                   </p>
                 </div>
-                <div className="flex shrink-0 gap-1">
+                <div className="grid w-full grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] gap-1 sm:w-auto sm:shrink-0">
                   <Button
                     size="sm"
+                    className="w-full"
                     variant="outline"
                     onClick={() => setEditandoMods(p)}
                   >
@@ -140,6 +141,7 @@ export function CatalogoTab() {
                   </Button>
                   <Button
                     size="sm"
+                    className="w-full"
                     variant="ghost"
                     disabled={busy === p.id}
                     onClick={() =>
@@ -204,13 +206,13 @@ function CategoriaForm({
         onCreate(nombre.trim(), orden);
         setNombre("");
       }}
-      className="flex gap-2"
+      className="flex min-w-0 gap-2"
     >
       <input
         value={nombre}
         onChange={(e) => setNombre(e.target.value)}
         placeholder="Nueva categoría"
-        className="w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+        className="min-w-0 flex-1 rounded-sm border border-line bg-panel px-2 py-1.5 text-sm focus:border-brand focus:outline-none"
       />
       <Button type="submit" size="sm">
         <Plus className="h-4 w-4" />
@@ -264,7 +266,7 @@ function ProductoForm({
           <select
             value={categoriaId}
             onChange={(e) => setCategoriaId(e.target.value)}
-            className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+            className="min-w-0 rounded-sm border border-line bg-panel px-2 py-1.5 text-sm focus:border-brand focus:outline-none"
           >
             {categorias.map((c) => (
               <option key={c.id} value={c.id}>
@@ -276,14 +278,14 @@ function ProductoForm({
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             placeholder="Nombre"
-            className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+            className="min-w-0 rounded-sm border border-line bg-panel px-2 py-1.5 text-sm focus:border-brand focus:outline-none"
           />
           <input
             value={precio}
             onChange={(e) => setPrecio(e.target.value)}
             inputMode="decimal"
             placeholder="Precio (10.00)"
-            className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+            className="min-w-0 rounded-sm border border-line bg-panel px-2 py-1.5 text-sm focus:border-brand focus:outline-none"
           />
           <input
             type="number"
@@ -292,13 +294,13 @@ function ProductoForm({
             value={prep}
             onChange={(e) => setPrep(Number(e.target.value))}
             placeholder="Prep (min)"
-            className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+            className="min-w-0 rounded-sm border border-line bg-panel px-2 py-1.5 text-sm focus:border-brand focus:outline-none"
           />
           <input
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
             placeholder="Descripción (opcional)"
-            className="rounded-md border border-slate-300 px-2 py-1.5 text-sm sm:col-span-2"
+            className="min-w-0 rounded-sm border border-line bg-panel px-2 py-1.5 text-sm focus:border-brand focus:outline-none sm:col-span-2"
           />
           <Button type="submit" className="sm:col-span-2">
             Crear producto
@@ -377,9 +379,9 @@ function ModificadoresModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-2xl bg-white">
-        <div className="flex items-center justify-between border-b border-slate-100 p-4">
-          <h2 className="font-semibold text-slate-900">Modificadores · {producto.nombre}</h2>
+      <div className="flex max-h-[90dvh] min-w-0 w-full max-w-lg flex-col rounded-sm border border-line bg-panel">
+        <div className="flex min-w-0 items-center justify-between gap-3 border-b border-line p-4">
+          <h2 className="min-w-0 truncate font-semibold text-slate-900">Modificadores · {producto.nombre}</h2>
           <button onClick={onClose} className="rounded-full p-1 hover:bg-slate-100">
             <X className="h-5 w-5 text-slate-500" />
           </button>
@@ -388,12 +390,12 @@ function ModificadoresModal({
         <div className="flex-1 space-y-4 overflow-y-auto p-4">
           {grupos.map((g, gi) => (
             <div key={gi} className="rounded-lg border border-slate-200 p-3">
-              <div className="mb-2 flex items-center gap-2">
+              <div className="mb-2 flex min-w-0 items-center gap-2">
                 <input
                   value={g.nombre}
                   onChange={(e) => update(gi, { nombre: e.target.value })}
                   placeholder="Nombre del grupo"
-                  className="flex-1 rounded-md border border-slate-300 px-2 py-1 text-sm"
+                  className="min-w-0 flex-1 rounded-sm border border-line bg-white px-2 py-1 text-sm focus:border-brand focus:outline-none"
                 />
                 <button
                   onClick={() => setGrupos((gs) => gs.filter((_, i) => i !== gi))}
@@ -434,19 +436,19 @@ function ModificadoresModal({
               </div>
               <div className="space-y-1.5">
                 {g.opciones.map((o, oi) => (
-                  <div key={oi} className="flex items-center gap-2">
+                  <div key={oi} className="grid min-w-0 grid-cols-[minmax(0,1fr)_5rem_auto] items-center gap-2">
                     <input
                       value={o.nombre}
                       onChange={(e) => updateOpcion(gi, oi, { nombre: e.target.value })}
                       placeholder="Opción"
-                      className="flex-1 rounded-md border border-slate-300 px-2 py-1 text-sm"
+                      className="min-w-0 w-full rounded-sm border border-line bg-white px-2 py-1 text-sm focus:border-brand focus:outline-none"
                     />
                     <input
                       value={o.deltaPrecio}
                       onChange={(e) => updateOpcion(gi, oi, { deltaPrecio: e.target.value })}
                       inputMode="decimal"
                       placeholder="+0.00"
-                      className="w-20 rounded-md border border-slate-300 px-2 py-1 text-sm"
+                      className="w-20 rounded-sm border border-line bg-white px-2 py-1 text-sm focus:border-brand focus:outline-none"
                     />
                     <button
                       onClick={() =>

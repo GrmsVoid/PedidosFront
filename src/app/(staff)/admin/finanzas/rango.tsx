@@ -24,7 +24,7 @@ export function nowLocal(): string {
 }
 
 export const inputCls =
-  "rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 transition-colors placeholder:text-slate-400 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10";
+  "rounded-sm border border-line bg-panel px-3 py-2 text-sm text-ink transition-colors placeholder:text-slate-400 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/10";
 
 export function RangoBar({
   desde,

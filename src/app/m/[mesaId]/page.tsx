@@ -4,8 +4,7 @@ import { ClienteApp } from "./cliente-app";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  themeColor: "#0f172a",
+  themeColor: "#f8f7f3",
 };
 
 export default function MesaPage({

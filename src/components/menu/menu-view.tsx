@@ -127,9 +127,9 @@ export function MenuView({
                 onClick={() => onSelect(p)}
                 style={{ animationDelay: `${Math.min(i, 8) * 40}ms` }}
                 className={cn(
-                  "group flex w-full animate-fade-up items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-3.5 text-left shadow-[0_1px_2px_rgba(11,11,13,0.03)] transition-all duration-200",
+                  "group flex w-full animate-fade-up items-center justify-between gap-3 rounded-sm border border-line bg-panel p-3.5 text-left shadow-soft transition-all duration-200",
                   p.disponible
-                    ? "hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-soft active:translate-y-0 active:scale-[0.99]"
+                    ? "hover:-translate-y-0.5 hover:border-brand hover:bg-white hover:shadow-soft active:translate-y-0 active:scale-[0.99]"
                     : "opacity-55 grayscale",
                 )}
               >
@@ -190,7 +190,7 @@ export function MenuView({
                 key={c.id}
                 onClick={() => onAddCombo!(c)}
                 style={{ animationDelay: `${Math.min(i, 8) * 40}ms` }}
-                className="group flex w-full animate-fade-up items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50/60 p-3.5 text-left shadow-[0_1px_2px_rgba(11,11,13,0.03)] transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-soft active:translate-y-0 active:scale-[0.99]"
+                className="group flex w-full animate-fade-up items-center justify-between gap-3 rounded-sm border border-brand/25 bg-accent-soft p-3.5 text-left shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:border-brand hover:bg-white hover:shadow-soft active:translate-y-0 active:scale-[0.99]"
               >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">

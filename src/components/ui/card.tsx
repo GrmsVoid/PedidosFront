@@ -12,9 +12,10 @@ export function Card({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(11,11,13,0.03)]",
+        // Minimal: manda el hairline, no la sombra.
+        "rounded-sm border border-line bg-panel",
         interactive &&
-          "transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-soft",
+          "transition-[transform,border-color,box-shadow] duration-200 ease-out-strong hover:-translate-y-0.5 hover:border-ink hover:bg-white hover:shadow-soft",
         className,
       )}
       {...props}

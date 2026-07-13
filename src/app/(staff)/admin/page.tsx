@@ -85,12 +85,15 @@ export default function AdminPage() {
   const [section, setSection] = useState<SectionId>("dashboard");
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row">
-      <aside className="lg:w-56 lg:shrink-0">
-        <nav className="flex gap-1 overflow-x-auto pb-1 lg:flex-col lg:gap-0 lg:overflow-visible lg:pb-0">
+    <div className="flex flex-col gap-7 lg:flex-row lg:items-start">
+      <aside className="border-b border-line pb-3 lg:sticky lg:top-24 lg:w-60 lg:shrink-0 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-5">
+        <nav className="no-scrollbar flex gap-1 overflow-x-auto pb-1 lg:flex-col lg:gap-0 lg:overflow-visible lg:pb-0">
           {GROUPS.map((g) => (
-            <div key={g.label} className="lg:mb-5">
-              <p className="hidden px-3 pb-1.5 text-xs font-semibold uppercase tracking-widest text-slate-400 lg:block">
+            <div
+              key={g.label}
+              className="mr-1 shrink-0 border-r border-line pr-2 last:mr-0 last:border-r-0 last:pr-0 lg:mb-5 lg:mr-0 lg:border-r-0 lg:pr-0"
+            >
+              <p className="hidden px-3 pb-2 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-muted lg:block">
                 {g.label}
               </p>
               <div className="flex gap-1 lg:flex-col">
@@ -102,10 +105,10 @@ export default function AdminPage() {
                       key={it.id}
                       onClick={() => setSection(it.id)}
                       className={cn(
-                        "flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium tracking-tight transition-colors",
+                        "relative flex min-h-10 shrink-0 items-center gap-2 rounded-sm px-3 py-2 text-sm font-semibold tracking-tight transition-colors",
                         active
-                          ? "bg-ink text-white"
-                          : "text-slate-600 hover:bg-slate-100 hover:text-ink",
+                          ? "bg-ink text-white after:absolute after:inset-y-2 after:left-0 after:w-0.5 after:bg-brand"
+                          : "text-muted hover:bg-accent-soft hover:text-ink",
                       )}
                     >
                       <Icon className="h-4 w-4" />

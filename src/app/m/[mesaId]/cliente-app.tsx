@@ -403,17 +403,17 @@ export function ClienteApp({ mesaId, qrToken }: { mesaId: string; qrToken: strin
     <Frame>
       <div className="pb-28">
         {/* Header */}
-        <header className="sticky top-0 z-10 border-b border-slate-200/80 bg-white/85 backdrop-blur-md">
+        <header className="sticky top-0 z-10 border-b border-line bg-paper/90 backdrop-blur-xl">
           <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-2.5">
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-ink text-white shadow-sm">
-                <Coffee className="h-[18px] w-[18px]" />
+                <Coffee className="h-[18px] w-[18px]" strokeWidth={1.75} />
               </span>
               <div>
-                <h1 className="font-display font-semibold leading-tight tracking-tight text-slate-900">
+                <h1 className="text-[16px] font-semibold leading-tight tracking-tight text-slate-900">
                   Café Demo
                 </h1>
-                <p className="text-xs text-slate-500">Mesa {mesaCodigo}</p>
+                <p className="text-xs font-medium text-slate-500">Mesa {mesaCodigo}</p>
               </div>
             </div>
             <div className="flex gap-1.5">
@@ -531,7 +531,7 @@ export function ClienteApp({ mesaId, qrToken }: { mesaId: string; qrToken: strin
 
         {/* Barra flotante: ir al pedido del grupo (desde el menú) */}
         {tab === "menu" && cartCount > 0 && (
-          <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md animate-slide-up border-t border-slate-200/80 bg-white/95 p-3 pb-safe shadow-top-soft backdrop-blur">
+          <div className="fixed inset-x-0 bottom-0 z-20 mx-auto max-w-md animate-slide-up border-t border-line bg-paper/95 p-3 pb-safe shadow-top-soft backdrop-blur">
             <Button size="lg" className="w-full justify-between" onClick={() => setTab("grupo")}>
               <span className="flex items-center gap-2">
                 <span className="relative">
@@ -568,8 +568,8 @@ export function ClienteApp({ mesaId, qrToken }: { mesaId: string; qrToken: strin
 /** Marco de la app: columna móvil centrada que en desktop se ve como un “teléfono” elevado. */
 function Frame({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-100 to-slate-200/70">
-      <div className="mx-auto min-h-screen w-full max-w-md bg-paper shadow-2xl ring-1 ring-slate-900/5">
+    <div className="min-h-screen bg-[#e9e8e1]">
+      <div className="mx-auto min-h-screen w-full max-w-md border-x border-line bg-paper shadow-lift">
         {children}
       </div>
     </div>

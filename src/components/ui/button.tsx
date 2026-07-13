@@ -7,12 +7,12 @@ type Size = "sm" | "md" | "lg";
 
 const VARIANTS: Record<Variant, string> = {
   primary:
-    "bg-ink text-white shadow-sm hover:bg-ink/90 hover:shadow-md disabled:bg-slate-300 disabled:shadow-none",
-  secondary: "bg-slate-100 text-ink hover:bg-slate-200",
+    "bg-ink text-white hover:bg-brand disabled:bg-slate-300",
+  secondary: "border border-line bg-panel text-ink hover:border-ink hover:bg-white",
   outline:
-    "border border-slate-200 bg-white text-ink shadow-sm hover:border-slate-300 hover:bg-slate-50",
-  ghost: "text-slate-600 hover:bg-slate-100 hover:text-ink",
-  danger: "bg-red-600 text-white shadow-sm hover:bg-red-700 disabled:bg-red-300",
+    "border border-line bg-paper text-ink hover:border-ink hover:bg-white",
+  ghost: "text-muted hover:bg-accent-soft hover:text-ink",
+  danger: "bg-red-600 text-white hover:bg-red-700 disabled:bg-red-300",
 };
 
 const SIZES: Record<Size, string> = {
@@ -34,9 +34,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ref={ref}
       disabled={disabled || loading}
       className={cn(
-        "relative inline-flex items-center justify-center gap-2 rounded-lg font-medium tracking-tight",
-        "transition-all duration-150 active:scale-[0.97]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 focus-visible:ring-offset-1",
+        "relative inline-flex items-center justify-center gap-2 rounded-sm font-medium tracking-tight",
+        // Propiedades explícitas (no transition-all) + curva con carácter (Emil).
+        "transition-[transform,background-color,border-color] duration-150 ease-out-strong active:scale-[0.97]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/45 focus-visible:ring-offset-2 focus-visible:ring-offset-paper",
         "disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100",
         VARIANTS[variant],
         SIZES[size],

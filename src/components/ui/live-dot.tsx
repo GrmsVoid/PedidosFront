@@ -5,10 +5,10 @@ export function LiveDot({ conectado }: { conectado: boolean }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ring-1 ring-inset",
+        "inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-[11px] font-semibold tracking-[0.04em] ring-1 ring-inset",
         conectado
           ? "bg-emerald-50 text-emerald-700 ring-emerald-600/15"
-          : "bg-slate-100 text-slate-500 ring-slate-600/10",
+          : "bg-panel text-muted ring-slate-600/10",
       )}
     >
       <span className="relative flex h-2 w-2">

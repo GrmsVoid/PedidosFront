@@ -16,10 +16,10 @@ const SECCIONES: Array<{
   icon: typeof ChefHat;
   tint: string;
 }> = [
-  { href: "/mozo", label: "Mozo", desc: "Mesas, pedidos y eventos", roles: ["MOZO"], icon: ClipboardList, tint: "bg-sky-50 text-sky-600" },
-  { href: "/kds", label: "Cocina (KDS)", desc: "Cola de preparación", roles: ["BARISTA"], icon: ChefHat, tint: "bg-amber-50 text-amber-600" },
-  { href: "/caja", label: "Caja", desc: "Cobros y cierres", roles: ["CAJERO"], icon: Wallet, tint: "bg-emerald-50 text-emerald-600" },
-  { href: "/admin", label: "Administración", desc: "Catálogo, salón, finanzas y reportes", roles: ["ADMIN"], icon: LayoutDashboard, tint: "bg-violet-50 text-violet-600" },
+  { href: "/mozo", label: "Mozo", desc: "Mesas, pedidos y eventos", roles: ["MOZO"], icon: ClipboardList, tint: "border border-brand/20 bg-accent-soft text-brand" },
+  { href: "/kds", label: "Cocina (KDS)", desc: "Cola de preparación", roles: ["BARISTA"], icon: ChefHat, tint: "border border-brand/20 bg-accent-soft text-brand" },
+  { href: "/caja", label: "Caja", desc: "Cobros y cierres", roles: ["CAJERO"], icon: Wallet, tint: "border border-brand/20 bg-accent-soft text-brand" },
+  { href: "/admin", label: "Administración", desc: "Catálogo, salón, finanzas y reportes", roles: ["ADMIN"], icon: LayoutDashboard, tint: "border border-brand/20 bg-accent-soft text-brand" },
 ];
 
 export default function StaffHub() {

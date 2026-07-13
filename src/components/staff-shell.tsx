@@ -37,7 +37,7 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
 
   if (loading || !user || sinPermiso) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
+      <div className="flex min-h-screen items-center justify-center bg-paper">
         <Spinner className="h-8 w-8" />
       </div>
     );
@@ -52,16 +52,16 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="sticky top-0 z-20 border-b border-slate-100 bg-white/85 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
+    <div className="min-h-screen bg-paper text-ink">
+      <header className="sticky top-0 z-20 border-b border-line bg-paper/90 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-3 px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-4 sm:gap-5">
-            <Link href="/staff" className="flex shrink-0 items-center gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-ink text-xs text-white shadow-sm">
-                ☕
+            <Link href="/staff" className="flex min-h-11 shrink-0 items-center gap-2.5" aria-label="Grimes OS, panel staff">
+              <span className="flex h-7 w-7 items-center justify-center rounded-sm bg-ink text-[11px] font-bold text-white">
+                G
               </span>
-              <span className="hidden font-display text-base font-semibold tracking-tight text-slate-900 sm:inline">
-                Café Demo
+              <span className="hidden text-[15px] font-semibold tracking-tight text-slate-900 sm:inline">
+                Grimes<span className="text-brand">/OS</span>
               </span>
             </Link>
             <nav className="no-scrollbar flex gap-1 overflow-x-auto">
@@ -72,10 +72,10 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
                     key={l.href}
                     href={l.href}
                     className={cn(
-                      "shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium tracking-tight transition-all duration-150",
+                      "relative shrink-0 rounded-sm px-3 py-2 text-sm font-semibold tracking-tight transition-[background-color,color,box-shadow] duration-150 ease-out-strong",
                       active
-                        ? "bg-ink text-white shadow-sm"
-                        : "text-slate-500 hover:bg-slate-100 hover:text-ink",
+                        ? "bg-ink text-white shadow-sm after:absolute after:inset-x-2 after:-bottom-[9px] after:h-0.5 after:bg-brand"
+                        : "text-muted hover:bg-accent-soft hover:text-ink",
                     )}
                   >
                     {l.label}
@@ -86,14 +86,14 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
           </div>
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <span className="hidden items-center gap-2 text-sm text-slate-500 md:flex">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-600">
+              <span className="flex h-8 w-8 items-center justify-center rounded-sm border border-line bg-panel text-xs font-semibold text-slate-700">
                 {user.name?.trim().charAt(0).toUpperCase() || "?"}
               </span>
               {user.name}
             </span>
             <button
               onClick={salir}
-              className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-ink"
+              className="flex min-h-10 items-center gap-1.5 rounded-sm px-2.5 py-1.5 text-sm text-muted transition-colors hover:bg-accent-soft hover:text-ink"
             >
               <LogOut className="h-4 w-4" />
               <span className="hidden sm:inline">Salir</span>
@@ -101,7 +101,7 @@ export function StaffShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
+      <main className="mx-auto max-w-[1240px] px-4 py-7 sm:px-6">{children}</main>
     </div>
   );
 }
