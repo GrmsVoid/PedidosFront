@@ -23,7 +23,7 @@ export default function TerminosPage() {
       <LegalSection number="1" title="Identidad del proveedor">
         <p>
           Grimes/OS es un sistema de gestión de pedidos para restaurantes y cafeterías,
-          desarrollado y operado por Grimes ("el Proveedor"), con RUC [RUC POR COMPLETAR]
+          desarrollado y operado por Grimes (&ldquo;el Proveedor&rdquo;), con RUC [RUC POR COMPLETAR]
           y domicilio en [CIUDAD], Perú. Canal de contacto oficial: WhatsApp
           +51 970 642 671.
         </p>
