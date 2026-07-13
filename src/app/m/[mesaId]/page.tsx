@@ -1,5 +1,11 @@
-import type { Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import { ClienteApp } from "./cliente-app";
+
+// Sesión de mesa por QR: URL efímera y con token; jamás debe indexarse.
+export const metadata: Metadata = {
+  title: "Tu mesa",
+  robots: { index: false, follow: false },
+};
 
 export const viewport: Viewport = {
   width: "device-width",
