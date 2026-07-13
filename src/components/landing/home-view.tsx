@@ -85,6 +85,54 @@ const LIVE_EVENTS = [
   ["Pago registrado", "S/ 86.00"],
 ] as const;
 
+// Sin pasarela de pago en el sitio: cada plan abre WhatsApp con un mensaje
+// prellenado y la conversación (alcance, precio, tiempos) se cierra ahí.
+const WHATSAPP_NUMBER = "51970642671";
+
+function whatsappUrl(text: string) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+}
+
+// Letras (A/B), no números: los planes son alternativas, no una secuencia.
+const PLANES = [
+  {
+    key: "saas",
+    plan: "Plan A",
+    name: "SaaS",
+    modality: "Suscripción mensual",
+    positioning:
+      "El sistema completo operando en la nube, con la marca Grimes/OS. Para abrir el servicio esta misma semana.",
+    features: [
+      "Puesta en marcha en días, no meses",
+      "Carta QR, mozo, cocina (KDS), caja y admin",
+      "Hosting, actualizaciones y soporte incluidos",
+      "Sin permanencia: pagas mes a mes",
+    ],
+    cta: "Cotizar por WhatsApp",
+    whatsappText:
+      "Hola Grimes, vi Grimes/OS y me interesa el plan SaaS para mi negocio. ¿Me pasas la información?",
+    featured: false,
+  },
+  {
+    key: "personalizado",
+    plan: "Plan B",
+    name: "Personalizado",
+    modality: "Proyecto a medida",
+    positioning:
+      "El mismo motor, con la identidad de tu restaurante en cada pantalla y funciones construidas para tu operación.",
+    features: [
+      "Logo, colores y tipografía de tu marca",
+      "Dominio propio (tumarca.com)",
+      "Integraciones a medida: POS, ticketera, pasarelas",
+      "Implementación y capacitación del equipo",
+    ],
+    cta: "Conversar por WhatsApp",
+    whatsappText:
+      "Hola Grimes, quiero Grimes/OS personalizado con la marca de mi restaurante (logo, colores y estilo). ¿Coordinamos?",
+    featured: true,
+  },
+] as const;
+
 export function HomeView() {
   const root = useRef<HTMLDivElement>(null);
 
@@ -184,6 +232,23 @@ export function HomeView() {
             },
           },
         );
+
+        gsap.fromTo(
+          select(".plan-card"),
+          { autoAlpha: 0, y: 34 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.72,
+            stagger: 0.12,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: select(".plan-grid")[0],
+              start: "top 78%",
+              once: true,
+            },
+          },
+        );
       }, root);
 
       return () => context.revert();
@@ -241,6 +306,9 @@ export function HomeView() {
             </a>
             <a href="#flujo" className="transition-colors duration-200 hover:text-[#181816]">
               Cómo funciona
+            </a>
+            <a href="#planes" className="transition-colors duration-200 hover:text-[#181816]">
+              Planes
             </a>
           </nav>
 
@@ -425,6 +493,115 @@ export function HomeView() {
           </div>
         </section>
 
+        <section id="planes" className="scroll-mt-20 border-b border-[#d9d8d1]">
+          <div className="mx-auto max-w-[1240px] px-5 py-20 sm:px-8 sm:py-28">
+            <div data-reveal className="grid gap-8 border-b border-[#cbc9c0] pb-9 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-7">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#77766f]">03 / Planes</p>
+                <h2 className="mt-4 text-4xl font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl">
+                  Dos formas
+                  <br />
+                  de tenerlo.
+                </h2>
+              </div>
+              <p className="max-w-md text-base leading-relaxed text-[#5f5e58] lg:col-span-4 lg:col-start-9">
+                Como servicio listo para operar, o como proyecto con tu marca.
+                El alcance y la propuesta se definen directo por WhatsApp.
+              </p>
+            </div>
+
+            <div className="plan-grid mt-8 border border-[#d3d2ca] bg-[#fcfbf7]">
+              {PLANES.map((plan, index) => (
+                <article
+                  key={plan.key}
+                  className={`plan-card relative grid gap-9 p-6 transition-colors duration-200 hover:bg-white sm:p-9 lg:grid-cols-12 lg:gap-8 ${
+                    index > 0 ? "border-t border-[#d3d2ca]" : ""
+                  }`}
+                >
+                  {plan.featured && (
+                    <span aria-hidden="true" className="absolute bottom-0 left-0 top-0 w-[3px] bg-[#ff5733]" />
+                  )}
+
+                  <div className="lg:col-span-4">
+                    <div className="flex items-center gap-4">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#77766f]">
+                        {plan.plan}
+                      </span>
+                      {plan.featured && (
+                        <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#ff5733]">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#ff5733]" />
+                          Más solicitado
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="mt-4 text-4xl font-semibold tracking-[-0.045em] sm:text-5xl">
+                      {plan.name}
+                      <span className="text-[#ff5733]">.</span>
+                    </h3>
+                    <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#62615b] sm:text-base">
+                      {plan.positioning}
+                    </p>
+                  </div>
+
+                  <div className="lg:col-span-5">
+                    <p className="border-b border-[#181816] pb-2.5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#77766f]">
+                      Incluye
+                    </p>
+                    <ul>
+                      {plan.features.map((feature, featureIndex) => (
+                        <li
+                          key={feature}
+                          className="flex items-baseline gap-4 border-b border-[#deddd6] py-3 last:border-0"
+                        >
+                          <span className="font-mono text-[10px] text-[#9a998f]">
+                            0{featureIndex + 1}
+                          </span>
+                          <span className="text-sm text-[#3f3e39]">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="flex flex-col justify-between gap-8 lg:col-span-3">
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#77766f]">
+                        Modalidad
+                      </p>
+                      <p className="mt-2 text-sm font-semibold tracking-[-0.01em]">{plan.modality}</p>
+                    </div>
+                    <m.div whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }} className="w-fit">
+                      <a
+                        href={whatsappUrl(plan.whatsappText)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`group/cta inline-flex min-h-12 items-center gap-2.5 px-6 text-[15px] font-semibold text-white transition-colors duration-200 ${
+                          plan.featured
+                            ? "bg-[#ff5733] hover:bg-[#ff6b49]"
+                            : "bg-[#181816] hover:bg-[#ff5733]"
+                        }`}
+                      >
+                        {plan.cta}
+                        <ArrowRight
+                          className="h-4 w-4 transition-transform group-hover/cta:translate-x-1"
+                          strokeWidth={2}
+                        />
+                      </a>
+                    </m.div>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div
+              data-reveal
+              className="mt-4 flex flex-wrap items-center justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-[#77766f]"
+            >
+              <span>Cotización sin costo · Respuesta directa de Grimes</span>
+              <span>WhatsApp +51 970 642 671</span>
+            </div>
+          </div>
+        </section>
+
         <section className="px-5 py-20 sm:px-8 sm:py-28">
           <div data-reveal className="relative mx-auto max-w-[1240px] overflow-hidden bg-[#181816] px-6 py-14 text-white sm:px-12 sm:py-20 lg:px-16">
             <div aria-hidden="true" className="absolute right-0 top-0 h-2 w-1/3 bg-[#ff5733]" />
@@ -470,14 +647,41 @@ export function HomeView() {
         <div className="mx-auto grid max-w-[1240px] gap-7 px-5 py-9 text-sm text-[#66655f] sm:px-8 md:grid-cols-3 md:items-center">
           <Wordmark muted />
           <p className="md:text-center">Sistema de pedidos · Diseñado y desarrollado por Grimes</p>
-          <a
-            href="https://instagram.com/void_grms"
-            target="_blank"
-            rel="noreferrer"
-            className="w-fit transition-colors hover:text-[#181816] md:justify-self-end"
+          <div className="flex flex-wrap gap-x-6 gap-y-2 md:justify-self-end">
+            <a
+              href={whatsappUrl("Hola Grimes, vengo de la web de Grimes/OS y quiero más información.")}
+              target="_blank"
+              rel="noreferrer"
+              className="w-fit transition-colors hover:text-[#181816]"
+            >
+              WhatsApp · +51 970 642 671
+            </a>
+            <a
+              href="https://instagram.com/void_grms"
+              target="_blank"
+              rel="noreferrer"
+              className="w-fit transition-colors hover:text-[#181816]"
+            >
+              Grimes · @Void_grms
+            </a>
+          </div>
+        </div>
+        <div className="border-t border-[#e3e2db]">
+          <nav
+            aria-label="Enlaces legales"
+            className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-x-6 gap-y-2 px-5 py-4 text-xs text-[#77766f] sm:px-8"
           >
-            Grimes · @Void_grms
-          </a>
+            <Link href="/terminos" className="transition-colors hover:text-[#181816]">
+              Términos y Condiciones
+            </Link>
+            <Link href="/privacidad" className="transition-colors hover:text-[#181816]">
+              Política de Privacidad
+            </Link>
+            <Link href="/libro-de-reclamaciones" className="transition-colors hover:text-[#181816]">
+              Libro de Reclamaciones
+            </Link>
+            <span className="ml-auto">© 2026 Grimes/OS</span>
+          </nav>
         </div>
       </footer>
         </div>
